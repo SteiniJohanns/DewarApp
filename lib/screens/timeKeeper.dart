@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:MyProviderApp/models/consts_routes.dart';
 import 'package:MyProviderApp/models/dewar.dart';
-import 'package:MyProviderApp/screens/result.dart';
 import 'package:flutter/material.dart';
 
 class TimeKeeper extends StatefulWidget {

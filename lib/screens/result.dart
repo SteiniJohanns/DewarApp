@@ -1,4 +1,3 @@
-import 'package:MyProviderApp/models/consts_routes.dart';
 import 'package:MyProviderApp/models/dewar.dart';
 import 'package:flutter/material.dart';
 
@@ -8,7 +7,7 @@ class FillingResult extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(myFillingResult);
+    print(myFillingResult.dewarType);
 
     return Scaffold(
       body: Container(
