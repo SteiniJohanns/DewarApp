@@ -7,7 +7,7 @@ class FillingResult extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(myFillingResult);
+    print(myFillingResult.dewarType);
 
     return Scaffold(
       body: Container(

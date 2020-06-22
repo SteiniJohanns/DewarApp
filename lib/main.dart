@@ -1,12 +1,10 @@
 import 'package:MyProviderApp/models/consts_routes.dart';
-import 'package:MyProviderApp/models/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'models/dewar.dart';
 import 'models/mock.dart';
 import 'models/routes.dart' as router;
-import 'providers/counter.dart';
 
 void main() {
   runApp(MyApp());
@@ -20,7 +18,6 @@ class MyApp extends StatelessWidget {
       title: 'Baukadæmið',
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: ChangeNotifierProvider<Dewar>(
         create: (context) => Dewar(),
@@ -36,20 +33,19 @@ class MyHomePage extends StatelessWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
   final String title;
   final _formkey = GlobalKey<FormState>();
-  final String hundur = 'gúllas';
 
   @override
   Widget build(BuildContext context) {
-    final _dewar = Provider.of<Dewar>(context, listen: false);
 
     return Scaffold(
         appBar: AppBar(
           title: Text(title),
         ),
-        body: myContainer(_dewar, context));
+        body: myContainer(context));
   }
 
-  Container myContainer(Dewar myDewar, BuildContext context) {
+  Container myContainer(BuildContext context) {
+    final myDewar = Provider.of<Dewar>(context,listen: false);
     return Container(
       alignment: Alignment.center,
       child: Form(
@@ -84,6 +80,8 @@ class MyHomePage extends StatelessWidget {
                     },
                   ),
                   SizedBox(height: 10),
+                  Consumer<Dewar>(builder: (_,myDewar,__)=> Text(myDewar.gasType == null? 'tómt':myDewar.gasType),
+                  ),
                   DropdownButtonFormField<String>(
                     decoration: InputDecoration(
                         labelText: 'Gastegund',
@@ -98,12 +96,17 @@ class MyHomePage extends StatelessWidget {
                         value: e,
                       );
                     }).toList(),
-                    onChanged: (_) {},
+                    value: myDewar.gasType,
+                    onChanged: (value) {
+                      print(value);
+                      myDewar.gasType = value;
+                    },
                     onSaved: (value) {
                       myDewar.gasType = value;
                     },
                   ),
                   SizedBox(height: 10),
+                  
                   DropdownButtonFormField<String>(
                     decoration: InputDecoration(
                         labelText: 'Baukategund',
@@ -118,7 +121,10 @@ class MyHomePage extends StatelessWidget {
                         value: e,
                       );
                     }).toList(),
-                    onChanged: (_) {},
+                    value: myDewar.dewarType,
+                    onChanged: (value) {
+                      myDewar.dewarType = value;
+                    },
                     onSaved: (value) {
                       myDewar.dewarType = value;
                     },

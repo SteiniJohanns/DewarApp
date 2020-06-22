@@ -17,5 +17,6 @@ class Dewar with ChangeNotifier{
 
   Dewar({this.number, this.dewarType,this.gasType, this.comment, this.cold, this.hot, this.highPressure,this.lowPressure, this.time});
 
+  
 
 }
