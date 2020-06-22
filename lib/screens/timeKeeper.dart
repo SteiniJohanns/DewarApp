@@ -22,42 +22,81 @@ class _TimeKeeperState extends State<TimeKeeper> {
   Color btnColor = Colors.red;
   bool lowHigh = false;
   bool hotCold = false;
+  bool listen = false;
 
-  @override
   @override
   void initState() {
     super.initState();
-
+    if (myTimer != null) {
+      myTimer.cancel();
+    }
     startTimer();
+    listen = true;
+  }
+
+  @override
+  void dispose() {
+    listen = false;
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Container(),
         title: Text('Áfylling í gangi'),
-      ),bottomNavigationBar: BottomAppBar(
-        child:Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
+      ),
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.blueGrey,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-          Container(child: FlatButton(child: Text('Bæta við baukanúmeri'),onPressed: (){},onLongPress: (){},color: Colors.blue,shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),),),
-          Container(child: FlatButton(child: Text('Bæta við athugasemd'),onPressed: (){},onLongPress: (){},),),
-        ],) ,
+            Container(
+              child: FlatButton(
+                child: Text(
+                  'Bæta við baukanúmeri',
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: () {
+                  showDialog(context: context, builder: (_) => _numberDialog()                  
+                  );
+                },
+                onLongPress: () {},
+                color: Colors.blue,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5)),
+              ),
+            ),
+            Container(
+              child: FlatButton(
+                child: Text('Bæta við athugasemd',
+                    style: TextStyle(color: Colors.white)),
+                onPressed: () {},
+                onLongPress: () {},
+                color: Colors.blue,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5)),
+              ),
+            ),
+          ],
         ),
+      ),
       body: Container(
         child: Center(
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Container(
-              child:Text('Áfylling í gangi',style: TextStyle(fontSize: 30)) 
-            ),
+                child:
+                    Text(myDewar.number != null ? myDewar.number :'Áfylling í gangi', style: TextStyle(fontSize: 30))),
             SizedBox(height: 60),
             _lowHighRow(),
             _hotColdRow(),
             SizedBox(height: 60),
             Container(
                 child: Text(
-              myClock,
+              myClock == null ? 'Korter gengin af göflunum' : myClock,
               style: TextStyle(fontSize: 40),
             )),
             SizedBox(height: 60),
@@ -71,11 +110,10 @@ class _TimeKeeperState extends State<TimeKeeper> {
                     myDewar.lowPressure = !lowHigh;
                     myDewar.highPressure = lowHigh;
                     myDewar.time = myClock;
-
-                    //print(myDewar);
                   });
                   myTimer.cancel();
-                  Navigator.pushNamed(context, FillingResultViewRoute, arguments: myDewar);
+                  Navigator.pushNamed(context, FillingResultViewRoute,
+                      arguments: myDewar);
                 },
                 child: Text(
                   'Stopp',
@@ -88,6 +126,19 @@ class _TimeKeeperState extends State<TimeKeeper> {
         )),
       ),
     );
+  }
+
+  AlertDialog _numberDialog(){
+    return AlertDialog(
+                    title: Text('Sláðu inn baukanúmer'),
+                    content: TextFormField(onChanged: (value){
+                        setState(() {
+                          myDewar.number = value;
+                        });
+                    },),actions: <Widget>[
+FlatButton.icon(onPressed: ()=> Navigator.pop(context), icon: Icon(Icons.check_circle, color:Colors.green,size: 60,),label: Text('')),
+                    ],
+                  );
   }
 
   Row _lowHighRow() {
@@ -174,7 +225,9 @@ class _TimeKeeperState extends State<TimeKeeper> {
   startTimer() {
     myTimer = Timer.periodic(Duration(seconds: 1), (f) {
       sek++;
-      convertSeconds(sek);
+      if (listen) {
+        convertSeconds(sek);
+      }
     });
   }
 
@@ -194,7 +247,7 @@ class _TimeKeeperState extends State<TimeKeeper> {
 
     setState(() {
       myClock = clock;
-      print(myTimer.tick);
+      //print(myClock);
     });
   }
 }

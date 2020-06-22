@@ -19,7 +19,6 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blueGrey,
       ),
       home: MyHomePage(title: 'Alltaf að bauka'),
-      
       onGenerateRoute: router.generateRoute,
       initialRoute: HomeViewRoute,
     );
@@ -35,24 +34,23 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage>{
+class _MyHomePageState extends State<MyHomePage> {
   final _formkey = GlobalKey<FormState>();
   final String title;
 
   _MyHomePageState({Key key, this.title});
 
-@override
+  @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         appBar: AppBar(
-          title: Text(title== null ?'tómt':'ekki tómt'),
+          title: Text(title == null ? 'tómt' : 'ekki tómt'),
         ),
         body: myContainer(context));
   }
 
   Container myContainer(BuildContext context) {
-    final Dewar myDewar= Dewar();
+    final Dewar myDewar = Dewar();
     return Container(
       alignment: Alignment.center,
       child: Form(
@@ -68,9 +66,13 @@ class _MyHomePageState extends State<MyHomePage>{
                   Text('Tímaskráning baukaáfyllingar',
                       style: TextStyle(fontSize: 20)),
                   SizedBox(height: 20),
-                  
-                  
                   DropdownButtonFormField<String>(
+                    validator: (value) {
+                      if (value == null) {
+                        return 'Veldu gastegund';
+                      }
+                      return null;
+                    },
                     decoration: InputDecoration(
                         labelText: 'Gastegund',
                         border: OutlineInputBorder(
@@ -86,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage>{
                     }).toList(),
                     onChanged: (value) {
                       print(value);
-                      setState((){
+                      setState(() {
                         myDewar.gasType = value;
                       });
                     },
@@ -95,8 +97,13 @@ class _MyHomePageState extends State<MyHomePage>{
                     },
                   ),
                   SizedBox(height: 10),
-                  
                   DropdownButtonFormField<String>(
+                    validator: (value) {
+                      if (value == null) {
+                        return 'Veldu baukategund';
+                      }
+                      return null;
+                    },
                     decoration: InputDecoration(
                         labelText: 'Baukategund',
                         border: OutlineInputBorder(
@@ -111,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage>{
                       );
                     }).toList(),
                     onChanged: (value) {
-                      setState((){
+                      setState(() {
                         myDewar.dewarType = value;
                       });
                     },
@@ -144,6 +151,4 @@ class _MyHomePageState extends State<MyHomePage>{
           )),
     );
   }
-
- 
 }
