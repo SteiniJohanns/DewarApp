@@ -42,7 +42,7 @@ class _TimeKeeperState extends State<TimeKeeper> {
           children: <Widget>[
             Container(
                 child: Text(
-              myDewar.number,
+              '',
               style: TextStyle(fontSize: 20),
             )),
             SizedBox(height: 60),

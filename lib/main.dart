@@ -61,27 +61,8 @@ class MyHomePage extends StatelessWidget {
                   Text('Tímaskráning baukaáfyllingar',
                       style: TextStyle(fontSize: 20)),
                   SizedBox(height: 20),
-                  TextFormField(
-                    decoration: InputDecoration(
-                        labelText: 'Númer',
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Colors.grey,
-                                style: BorderStyle.solid,
-                                width: 2))),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Það verður að vera númer';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      myDewar.number = value;
-                    },
-                  ),
-                  SizedBox(height: 10),
-                  Consumer<Dewar>(builder: (_,myDewar,__)=> Text(myDewar.gasType == null? 'tómt':myDewar.gasType),
-                  ),
+                  
+                  
                   DropdownButtonFormField<String>(
                     decoration: InputDecoration(
                         labelText: 'Gastegund',
