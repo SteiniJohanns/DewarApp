@@ -34,17 +34,23 @@ class _TimeKeeperState extends State<TimeKeeper> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text('Áfylling í gangi'),
+      ),bottomNavigationBar: BottomAppBar(
+        child:Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+          Container(child: FlatButton(child: Text('Bæta við baukanúmeri'),onPressed: (){},onLongPress: (){},color: Colors.blue,shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),),),
+          Container(child: FlatButton(child: Text('Bæta við athugasemd'),onPressed: (){},onLongPress: (){},),),
+        ],) ,
+        ),
       body: Container(
         child: Center(
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Container(
-                child: Text(
-              '',
-              style: TextStyle(fontSize: 20),
-            )),
+              child:Text('Áfylling í gangi',style: TextStyle(fontSize: 30)) 
+            ),
             SizedBox(height: 60),
             _lowHighRow(),
             _hotColdRow(),

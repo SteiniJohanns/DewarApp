@@ -1,9 +1,8 @@
 
 
 
-import 'package:flutter/foundation.dart';
 
-class Dewar with ChangeNotifier{
+class Dewar{
   String number;
   String dewarType;
   String gasType;

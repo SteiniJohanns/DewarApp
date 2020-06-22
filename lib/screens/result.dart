@@ -28,7 +28,6 @@ class FillingResult extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
-                      myText('Númer',20),
                       myText('Gas',20),
                       myText('Tegund',20),
                       myText('Ástand',20),
@@ -39,7 +38,6 @@ class FillingResult extends StatelessWidget {
                   SizedBox(width: 20,),
                   Column(crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      myText(myFillingResult.number,20),
                       myText(myFillingResult.gasType,20),
                       myText(myFillingResult.dewarType,20),
                       myText(myFillingResult.hot ? 'Heitur' : 'Kaldur',20),
