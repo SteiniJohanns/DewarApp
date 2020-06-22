@@ -1,6 +1,5 @@
 import 'package:MyProviderApp/models/consts_routes.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import 'models/dewar.dart';
 import 'models/mock.dart';
@@ -19,33 +18,41 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
       ),
-      home: ChangeNotifierProvider<Dewar>(
-        create: (context) => Dewar(),
-        child: MyHomePage(title: 'Alltaf að bauka'),
-      ),
+      home: MyHomePage(title: 'Alltaf að bauka'),
+      
       onGenerateRoute: router.generateRoute,
       initialRoute: HomeViewRoute,
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class MyHomePage extends StatefulWidget {
   final String title;
-  final _formkey = GlobalKey<FormState>();
+
+  MyHomePage({Key key, this.title}) : super(key: key);
 
   @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage>{
+  final _formkey = GlobalKey<FormState>();
+  final String title;
+
+  _MyHomePageState({Key key, this.title});
+
+@override
   Widget build(BuildContext context) {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text(title),
+          title: Text(title== null ?'tómt':'ekki tómt'),
         ),
         body: myContainer(context));
   }
 
   Container myContainer(BuildContext context) {
-    final myDewar = Provider.of<Dewar>(context,listen: false);
+    final Dewar myDewar= Dewar();
     return Container(
       alignment: Alignment.center,
       child: Form(
@@ -61,27 +68,8 @@ class MyHomePage extends StatelessWidget {
                   Text('Tímaskráning baukaáfyllingar',
                       style: TextStyle(fontSize: 20)),
                   SizedBox(height: 20),
-                  TextFormField(
-                    decoration: InputDecoration(
-                        labelText: 'Númer',
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Colors.grey,
-                                style: BorderStyle.solid,
-                                width: 2))),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Það verður að vera númer';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      myDewar.number = value;
-                    },
-                  ),
-                  SizedBox(height: 10),
-                  Consumer<Dewar>(builder: (_,myDewar,__)=> Text(myDewar.gasType == null? 'tómt':myDewar.gasType),
-                  ),
+                  
+                  
                   DropdownButtonFormField<String>(
                     decoration: InputDecoration(
                         labelText: 'Gastegund',
@@ -96,10 +84,11 @@ class MyHomePage extends StatelessWidget {
                         value: e,
                       );
                     }).toList(),
-                    value: myDewar.gasType,
                     onChanged: (value) {
                       print(value);
-                      myDewar.gasType = value;
+                      setState((){
+                        myDewar.gasType = value;
+                      });
                     },
                     onSaved: (value) {
                       myDewar.gasType = value;
@@ -121,9 +110,10 @@ class MyHomePage extends StatelessWidget {
                         value: e,
                       );
                     }).toList(),
-                    value: myDewar.dewarType,
                     onChanged: (value) {
-                      myDewar.dewarType = value;
+                      setState((){
+                        myDewar.dewarType = value;
+                      });
                     },
                     onSaved: (value) {
                       myDewar.dewarType = value;
@@ -138,7 +128,6 @@ class MyHomePage extends StatelessWidget {
                             _formkey.currentState.reset();
                             Navigator.of(context).pushNamed(TimeKeeperViewRoute,
                                 arguments: myDewar);
-                            //print(myDewar.dewarType);
                           }
                         },
                         child: Text(
@@ -155,4 +144,6 @@ class MyHomePage extends StatelessWidget {
           )),
     );
   }
+
+ 
 }
