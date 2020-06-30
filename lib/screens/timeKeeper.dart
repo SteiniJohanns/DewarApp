@@ -72,7 +72,10 @@ class _TimeKeeperState extends State<TimeKeeper> {
               child: FlatButton(
                 child: Text('Bæta við athugasemd',
                     style: TextStyle(color: Colors.white)),
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(context: context, builder: (_) => _commentDialog()                  
+                  );
+                },
                 onLongPress: () {},
                 color: Colors.blue,
                 shape: RoundedRectangleBorder(
@@ -84,46 +87,48 @@ class _TimeKeeperState extends State<TimeKeeper> {
       ),
       body: Container(
         child: Center(
-            child: Column(
+            child: SingleChildScrollView(
+                          child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Container(
-                child:
-                    Text(myDewar.number != null ? myDewar.number :'Áfylling í gangi', style: TextStyle(fontSize: 30))),
-            SizedBox(height: 60),
-            _lowHighRow(),
-            _hotColdRow(),
-            SizedBox(height: 60),
-            Container(
-                child: Text(
-              myClock == null ? 'Korter gengin af göflunum' : myClock,
-              style: TextStyle(fontSize: 40),
-            )),
-            SizedBox(height: 60),
-            FlatButton(
-                onPressed: () {},
-                onLongPress: () {
-                  setState(() {
-                    btnColor = Colors.green;
-                    myDewar.hot = !hotCold;
-                    myDewar.cold = hotCold;
-                    myDewar.lowPressure = !lowHigh;
-                    myDewar.highPressure = lowHigh;
-                    myDewar.time = myClock;
-                  });
-                  myTimer.cancel();
-                  Navigator.pushNamed(context, FillingResultViewRoute,
-                      arguments: myDewar);
-                },
-                child: Text(
-                  'Stopp',
-                  style: TextStyle(color: Colors.white, fontSize: 25),
-                ),
-                color: btnColor,
-                padding: EdgeInsets.all(50),
-                shape: CircleBorder()),
+              Container(
+                  child:
+                      Text(myDewar.number != null ? myDewar.number :'Áfylling í gangi', style: TextStyle(fontSize: 30))),
+              SizedBox(height: 60),
+              _lowHighRow(),
+              _hotColdRow(),
+              SizedBox(height: 60),
+              Container(
+                  child: Text(
+                myClock == null ? 'Korter gengin af göflunum' : myClock,
+                style: TextStyle(fontSize: 40),
+              )),
+              SizedBox(height: 60),
+              FlatButton(
+                  onPressed: () {},
+                  onLongPress: () {
+                    setState(() {
+                      btnColor = Colors.green;
+                      myDewar.hot = !hotCold;
+                      myDewar.cold = hotCold;
+                      myDewar.lowPressure = !lowHigh;
+                      myDewar.highPressure = lowHigh;
+                      myDewar.time = myClock;
+                    });
+                    myTimer.cancel();
+                    Navigator.pushNamed(context, FillingResultViewRoute,
+                        arguments: myDewar);
+                  },
+                  child: Text(
+                    'Stopp',
+                    style: TextStyle(color: Colors.white, fontSize: 25),
+                  ),
+                  color: btnColor,
+                  padding: EdgeInsets.all(50),
+                  shape: CircleBorder()),
           ],
-        )),
+        ),
+            )),
       ),
     );
   }
@@ -131,12 +136,32 @@ class _TimeKeeperState extends State<TimeKeeper> {
   AlertDialog _numberDialog(){
     return AlertDialog(
                     title: Text('Sláðu inn baukanúmer'),
-                    content: TextFormField(onChanged: (value){
+                    content: TextFormField(
+                      autofocus: true,
+                      autocorrect: false,
+                      onChanged: (value){
                         setState(() {
                           myDewar.number = value;
                         });
                     },),actions: <Widget>[
-FlatButton.icon(onPressed: ()=> Navigator.pop(context), icon: Icon(Icons.check_circle, color:Colors.green,size: 60,),label: Text('')),
+                      FlatButton.icon(onPressed: ()=> Navigator.pop(context), icon: Icon(Icons.check_circle, color:Colors.green,size: 60,),label: Text('')),
+                    ],
+                  );
+  }
+  AlertDialog _commentDialog(){
+    return AlertDialog(
+                    title: Text('Skráðu athugasemd'),
+                    content: TextFormField(
+                      keyboardType: TextInputType.text,
+                      autofocus: true,
+                      autocorrect: false,
+                      maxLines: 2,
+                      onChanged: (value){
+                        setState(() {
+                          myDewar.comment = value;
+                        });
+                    },),actions: <Widget>[
+                      FlatButton.icon(onPressed: ()=> Navigator.pop(context), icon: Icon(Icons.check_circle, color:Colors.green,size: 60,),label: Text('')),
                     ],
                   );
   }

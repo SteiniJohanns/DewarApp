@@ -1,5 +1,6 @@
 import 'package:MyProviderApp/models/dewar.dart';
 import 'package:flutter/material.dart';
+import 'package:MyProviderApp/models/saveresult.dart';
 
 class FillingResult extends StatelessWidget {
   final Dewar myFillingResult;
@@ -46,7 +47,11 @@ class FillingResult extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      myText(myFillingResult.number, 20),
+                      myText(
+                          myFillingResult.number == null
+                              ? ''
+                              : myFillingResult.number,
+                          20),
                       myText(myFillingResult.gasType, 20),
                       myText(myFillingResult.dewarType, 20),
                       myText(myFillingResult.hot ? 'Heitur' : 'Kaldur', 20),
@@ -60,6 +65,17 @@ class FillingResult extends StatelessWidget {
                   ),
                 ],
               ),
+              Column(crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  ListTile(title: myText('Athugasemd', 20),subtitle: myText(
+                          myFillingResult.comment == null
+                              ? ''
+                              : myFillingResult.comment,
+                          16),)
+                  
+                  
+                ],
+              ),
               Divider(
                 thickness: 3,
                 color: Colors.white,
@@ -68,6 +84,8 @@ class FillingResult extends StatelessWidget {
               Center(
                 child: FlatButton(
                     onPressed: () {
+                      myFillingResult.date = DateTime.now().toString();
+                      saveToGoogleSheets(myFillingResult);
                       Navigator.popUntil(context, ModalRoute.withName('/'));
                     },
                     child: Text(
