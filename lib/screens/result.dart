@@ -96,6 +96,18 @@ class FillingResult extends StatelessWidget {
                     padding: EdgeInsets.all(50),
                     shape: CircleBorder()),
               ),
+              Row(
+                children: <Widget>[
+                  FlatButton(
+                    onPressed: (){},
+                    onLongPress: () => Navigator.popUntil(context, ModalRoute.withName('/')), 
+                    child: Text('Sleppa', style: TextStyle(color:Colors.white),),
+                    color: Colors.red,
+                    padding: EdgeInsets.all(20),
+                    shape: CircleBorder(),
+                    ),
+                ],
+              ),
             ],
           )),
     );
